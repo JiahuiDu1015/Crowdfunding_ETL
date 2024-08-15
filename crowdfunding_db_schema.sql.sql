@@ -1,60 +1,46 @@
-﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- Link to schema: https://app.quickdatabasediagrams.com/#/d/220L7N
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
-
-
-CREATE TABLE "Campaigns" (
-    "cf_id" int   NOT NULL,
-    "contact_id" int   NOT NULL,
-    "company_name" varchar   NOT NULL,
-    "description" text   NOT NULL,
-    "goal" decimal   NOT NULL,
-    "pledged" decimal   NOT NULL,
-    "outcome" varchar   NOT NULL,
-    "backers_count" int   NOT NULL,
-    "country" varchar   NOT NULL,
-    "currency" varchar   NOT NULL,
-    "launched_date" datetime   NOT NULL,
-    "end_date" datetime   NOT NULL,
-    "category_id" int   NOT NULL,
-    "subcategory_id" int   NOT NULL,
-    CONSTRAINT "pk_Campaigns" PRIMARY KEY (
-        "cf_id"
-     )
+CREATE TABLE campaign (
+    cf_id SERIAL PRIMARY KEY,
+    contact_id INT,
+    company_name VARCHAR(255),
+    description TEXT,
+    goal DECIMAL,
+    pledged DECIMAL,
+    outcome VARCHAR(50),
+    backers_count INT,
+    country VARCHAR(100),
+    currency VARCHAR(10),
+    launched_date TIMESTAMP,
+    end_date TIMESTAMP,
+    category_id VARCHAR,
+    subcategory_id VARCHAR
 );
 
-CREATE TABLE "Categories" (
-    "category_id" int   NOT NULL,
-    "category" varchar   NOT NULL,
-    CONSTRAINT "pk_Categories" PRIMARY KEY (
-        "category_id"
-     )
+SELECT * FROM campaign LIMIT 10;
+
+CREATE TABLE category (
+    category_id VARCHAR(255) PRIMARY KEY,
+    category VARCHAR(255)
 );
 
-CREATE TABLE "Subcategories" (
-    "subcategory_id" int   NOT NULL,
-    "subcategory" varchar   NOT NULL,
-    CONSTRAINT "pk_Subcategories" PRIMARY KEY (
-        "subcategory_id"
-     )
+SELECT * FROM category LIMIT 10;
+
+CREATE TABLE subcategory(
+    subcategory_id VARCHAR(255) PRIMARY KEY,
+    subcategory VARCHAR(255)
 );
 
-CREATE TABLE "Contacts" (
-    "contact_id" int   NOT NULL,
-    "first_name" varchar   NOT NULL,
-    "last_name" varchar   NOT NULL,
-    "email" varchar   NOT NULL,
-    CONSTRAINT "pk_Contacts" PRIMARY KEY (
-        "contact_id"
-     )
+SELECT * FROM subcategory LIMIT 10;
+
+CREATE TABLE contacts (
+    contact_id VARCHAR(255) PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255)
 );
 
-ALTER TABLE "Campaigns" ADD CONSTRAINT "fk_Campaigns_contact_id" FOREIGN KEY("contact_id")
-REFERENCES "Contacts" ("contact_id");
+SELECT * FROM contacts LIMIT 10;
 
-ALTER TABLE "Campaigns" ADD CONSTRAINT "fk_Campaigns_category_id" FOREIGN KEY("category_id")
-REFERENCES "Categories" ("category_id");
-
-ALTER TABLE "Campaigns" ADD CONSTRAINT "fk_Campaigns_subcategory_id" FOREIGN KEY("subcategory_id")
-REFERENCES "Subcategories" ("subcategory_id");
+SELECT datname 
+FROM pg_database 
+WHERE datname = 'crowdfunding_db';
 
